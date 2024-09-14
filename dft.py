@@ -43,6 +43,13 @@ def idft(N, A, B):
 
     return a, b
 
+# Calculate magnitude spectrum
+def magnitude_spectrum(N, A, B):
+    magnitude = [0] * N
+    for k in range(N):
+        magnitude[k] = math.sqrt(A[k]**2 + B[k]**2)
+    return magnitude
+
 def main():
     #gettinginput from the user
     N = int(input("Enter the length of x[n] ie N = "))
@@ -63,6 +70,17 @@ def main():
     print("\nX[k] by DFT:")
     for i in range(N):
         print(f"{A[i]:6.2f} + j{B[i]:6.2f}")
+    
+    #calculate magnitude spectrum
+    magnitude = magnitude_spectrum(N, A, B)
+
+    #magnitude spectrum
+    print("\nMagnitude Spectrum |X[k]|:")
+    for i in range(N):
+        print(f"|X[{i}]| = {magnitude[i]:6.2f}")
+
+
+
 
     # Perform IDFT
     a_reconstructed, b_reconstructed = idft(N, A, B)

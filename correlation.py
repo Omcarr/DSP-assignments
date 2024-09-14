@@ -42,6 +42,44 @@ def correlate(x, h):
 
     return y
 
+
+def check_signal_symmetry(signal):
+    # Check if time is symmetric around zero
+    if np.array_equal(signal, np.flip(signal)):
+        return 'even'
+    elif np.array_equal(signal, -np.flip(signal)):
+        return 'odd'
+    else:
+        return 'neither odd nor even'
+
+def calculate_energy(signal):
+    return np.sum(np.abs(signal)**2)
+
+def calculate_power(signal):
+    N = len(signal)
+    return np.sum(np.abs(signal)**2) / N
+
+#power/enegry classification
+def classify_signal(signal):
+    N = len(signal)
+
+    # Calculate energy and power
+    energy = calculate_energy(signal)
+    power = calculate_power(signal)
+
+    # Define thresholds for classification
+    energy_threshold = 1e-10
+    power_threshold = 1e-10
+
+    if energy < energy_threshold and power > power_threshold:
+        return 'energy signal'
+    elif power < power_threshold and energy > energy_threshold:
+        return 'power signal'
+    else:
+        return 'undefined'
+
+
+
 def main():
     # Get lengths and values for x and h
     lx = int(input("Enter the length of x[n]: "))
@@ -64,6 +102,24 @@ def main():
     print("\n y = ", end="")
     for value in y:
         print(f"{value:6.2f} ", end="")
+
+    
+    result = check_signal_symmetry(signal=y)
+    print(f"\n\nThe signal is {result}.")
+
+    #calculate energy
+    energy = calculate_energy(signal=y)
+    print(f"The energy of the signal is {energy}")
+
+    #calculate power 
+    power = calculate_power(signal=y)
+    print(f"The power of the signal is {power}")
+    
+    #is enegry or power signal
+    classification = classify_signal(signal=y)
+    print(f"The signal is classified as: {classification}.")
+    
+
 
 if __name__ == "__main__":
     main()
